@@ -1,19 +1,33 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { View, StatusBar } from 'react-native';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducers from './reducers'
+import StackNavigation from './components/StackNavigation'
+import Constants from 'expo-constants'
+import { purple, gray } from './utils/colors'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+function AppStatusBar ({backgroundColor, ...props}){
+  return(
+    <View style={{backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
     </View>
-  );
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+class App extends Component {
+  render(){
+    const store = createStore(reducers)
+    return (
+      <Provider store={store} >
+        <View style={{flex: 1}}>
+          <AppStatusBar backgroundColor={purple} barStyle='light-content' />
+          <StackNavigation />
+        </View>
+      </Provider>
+      
+    );
+  }
+}
+
+export default App
