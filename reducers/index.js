@@ -1,7 +1,6 @@
 import { ADD_DECK, 
     RETRIEVE_DECK, 
     DELETE_DECK, 
-    RESET_DECK , 
     ADD_CARD } from '../actions'
 
 export default function decks (state = {}, action){
@@ -20,13 +19,10 @@ export default function decks (state = {}, action){
                 ...action.decks
             }
         case DELETE_DECK:
+            delete state[action.deckId]
             return{
                 ...state
-            }
-        case RESET_DECK:            
-            return{
-                ...state,
-            }
+            }        
         case ADD_CARD:
             const { deckId, card } = action
             return{

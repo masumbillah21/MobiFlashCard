@@ -1,7 +1,6 @@
 export const ADD_DECK = 'ADD_DECK'
 export const RETRIEVE_DECK = 'RETRIEVE_DECK'
 export const DELETE_DECK = 'DELETE_DECK'
-export const RESET_DECK = 'RESET_DECK'
 export const ADD_CARD = 'ADD_CARD'
 
 export function addDeck(deck){
@@ -18,18 +17,13 @@ export function retrieveDeck(decks){
     }
 }
 
-export function deleteDeck(id){
+export function deleteDeck(deckId){
     return{
         type: DELETE_DECK,
-        id
+        deckId
     }
 }
 
-export function resetDeck(){
-    return{
-        type: RESET_DECK
-    }
-}
 
 export function addCard(deckId, card){
     return{

@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import { white, purple, red } from '../utils/colors'
 import SubmitButton from './SubmitButton'
 import TextButton from './TextButton'
-import { getCardLength } from '../utils/helpers'
+import { getCardLength, removeDeck } from '../utils/helpers'
+import { deleteDeck } from '../actions'
+import { NavigationActions } from 'react-navigation'
 
 class DeckDetails extends Component {
 
@@ -25,43 +27,58 @@ class DeckDetails extends Component {
     }
 
     handleDeleteDeck = () => {
+        const { deckId, dispatch, navigation } = this.props
+        dispatch(deleteDeck(deckId))
+        removeDeck(deckId)
+
+        navigation.goBack()
 
     }
-    
-    render() {
-        const { decks, deckId } = this.props
-        const { title, questions } = decks[deckId]
+
         
+    render() {
+        if(this.props.deckId){
+            const { decks, deckId } = this.props
+            const { title, questions } = decks[deckId]
+            return (
+                <View style={styles.container}>
+              
+                    <Text style={styles.title}>{title}</Text>
+    
+                    <Text style={styles.total}>{questions ? getCardLength(questions) : 'No card added'}</Text>
+                    
+                    <View style={styles.buttonContainer}>
+    
+                        <SubmitButton 
+                        onPress={ () => this.handleAddCard() }>
+                            <Text>Add Card</Text>
+                        </SubmitButton>
+    
+                        <SubmitButton 
+                            style={styles.quizButton} 
+                            onPress={ () => this.handleStartQuiz()}>
+                            <Text style={{color: white}}>Start Quiz</Text>
+                        </SubmitButton>
+                    </View>
+    
+                    <View>
+                        <TextButton 
+                            style={{marginTop: 30}} 
+                            onPress={() => this.handleDeleteDeck()}>
+                            <Text style={styles.deleteButton}>Delete Deck</Text>
+                        </TextButton>
+                    </View>
+                </View>
+            )
+        }
+
         return (
-            <View style={styles.container}>
-          
-                <Text style={styles.title}>{title}</Text>
-
-                <Text style={styles.total}>{getCardLength(questions)}</Text>
-                
-                <View style={styles.buttonContainer}>
-
-                    <SubmitButton 
-                    onPress={ () => this.handleAddCard() }>
-                        <Text>Add Card</Text>
-                    </SubmitButton>
-
-                    <SubmitButton 
-                        style={styles.quizButton} 
-                        onPress={ () => this.handleStartQuiz()}>
-                        <Text style={{color: white}}>Start Quiz</Text>
-                    </SubmitButton>
-                </View>
-
-                <View>
-                    <TextButton 
-                        style={{marginTop: 30}} 
-                        onPress={() => this.handleDeleteDeck()}>
-                        <Text style={styles.deleteButton}>Delete Deck</Text>
-                    </TextButton>
-                </View>
+            <View>
+                <Text>No deck</Text>
             </View>
         )
+        
+        
     }
 }
 

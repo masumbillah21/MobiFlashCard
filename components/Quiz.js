@@ -32,7 +32,6 @@ class Quiz extends Component {
     submitAnswer = (answer) => {
         //Clear notification as perticipated
         clearLocalNotification()
-        
         const { correct, quesNumber } = this.state
 
         if(answer){

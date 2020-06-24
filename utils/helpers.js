@@ -58,12 +58,24 @@ export const saveCard = async (key, values) => {
         console.log("Error saving card: ", e)
     }
 }
+
+export const removeDeck = async (deckId) => {
+    const results = await AsyncStorage.getItem(MOBI_FLASHCARDS_STORAGE_KEY)
+    if (results) {
+        const data = JSON.parse(results)
+        delete data[deckId]
+
+        await AsyncStorage.setItem(MOBI_FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
+        return data
+    }
+    return {}
+}
 /*
 * Card Length
 */
 
 export const getCardLength = (questions) => {
-    if(questions.length === 0){
+    if(!questions || questions.length === 0){
         return <Text>No card added</Text>
     }else if (questions.length === 1){
         return <Text>Total 1 Card</Text>
