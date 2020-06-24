@@ -5,6 +5,7 @@ import SubmitButton from './SubmitButton'
 import { purple, red, white, gray, orange } from '../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { NavigationActions } from 'react-navigation'
+import { clearLocalNotification } from '../utils/helpers'
 
 class Quiz extends Component {
     static navigationOptions = ( {navigation} ) => {
@@ -29,6 +30,9 @@ class Quiz extends Component {
     }
 
     submitAnswer = (answer) => {
+        //Clear notification as perticipated
+        clearLocalNotification()
+        
         const { correct, quesNumber } = this.state
 
         if(answer){

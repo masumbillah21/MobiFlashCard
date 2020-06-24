@@ -6,6 +6,7 @@ import reducers from './reducers'
 import StackNavigation from './components/StackNavigation'
 import Constants from 'expo-constants'
 import { purple } from './utils/colors'
+import { setLocalNotification } from './utils/helpers'
 
 function AppStatusBar ({backgroundColor, ...props}){
   return(
@@ -16,6 +17,10 @@ function AppStatusBar ({backgroundColor, ...props}){
 }
 
 class App extends Component {
+
+  componentDidMount(){
+    setLocalNotification()
+  }
 
   render(){
     const store = createStore(reducers)

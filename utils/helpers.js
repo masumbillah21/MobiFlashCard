@@ -5,6 +5,11 @@ import {getInitailData, MOBI_FLASHCARDS_STORAGE_KEY, MOBI_FLASHCARDS_NOTIFY_KEY 
 import * as Permissions from 'expo-permissions'
 import { Notifications } from 'expo'
 
+
+/*
+* Storing data to local storage
+*/
+
 export const getDecks = async () => {
     try{
         const values = await AsyncStorage.getItem(MOBI_FLASHCARDS_STORAGE_KEY)
@@ -79,8 +84,8 @@ export function clearLocalNotification(){
 
 function createNotification(){
     return{
-        title: "Participate one card today",
-        body: "Don't forget to participate a card",
+        title: "Mobi Flashcard",
+        body: "👋 Don't forget to participate a card today",
         ios:{
             sound: true
         },
@@ -94,31 +99,30 @@ function createNotification(){
 }
 
 export function setLocalNotification(){
-    AsyncStorage.setItem(MOBI_FLASHCARDS_NOTIFY_KEY)
-        .then(JSON.parse)
-        .then((data) => {
-            if(!data){
-                Permissions.askAsync(Permissions.NOTIFICATIONS)
-                    .then(({ status }) => {
-                        if(status === 'granted'){
-                            Notifications.cancelAllScheduledNotificationsAsync()
+    AsyncStorage.getItem(MOBI_FLASHCARDS_NOTIFY_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+        if(data === null){
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+        .then(({status}) => {
+            if(status === 'granted'){
+                Notifications.cancelAllScheduledNotificationsAsync()
 
-                            let tomorrow = new Date()
-                            tomorrow.setDate(tomorrow.getDate + 1)
-                            tomorrow.setHours(20)
-                            tomorrow.setMinutes(0)
+                let tomorrow = new Date()
+                tomorrow.setDate(tomorrow.getDate + 1)
+                tomorrow.setHours(2)
+                tomorrow.setMinutes(57)
 
-                            Notifications.scheduleLocalNotificationAsync(
-                                createNotification(),
-                                {
-                                time: tomorrow,
-                                repeat: 'day'
-                                }
-                            )
-
-                            AsyncStorage.setItem(MOBI_FLASHCARDS_NOTIFY_KEY, JSON.stringify(true))
-                        }
-                    })
+                Notifications.scheduleLocalNotificationAsync(
+                    createNotification(),
+                    {
+                        time: tomorrow,
+                        repeat: 'day'
+                    }
+                )
+                AsyncStorage.setItem(MOBI_FLASHCARDS_NOTIFY_KEY, JSON.stringify(true))
             }
         })
+        }
+    })
 }
