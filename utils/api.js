@@ -1,6 +1,5 @@
-import { AsyncStorage } from 'react-native'
-
 export const MOBI_FLASHCARDS_STORAGE_KEY = 'MobiFlashCards:decks'
+export const MOBI_FLASHCARDS_NOTIFY_KEY = 'MobiFlashCards:notify'
 
 const initialData = {
   React: {
@@ -27,11 +26,6 @@ const initialData = {
   }
 }
 
-function setDecks(){
-  AsyncStorage.setItem(MOBI_FLASHCARDS_STORAGE_KEY, JSON.stringify(initialData))
+export function getInitailData(){
   return initialData
-}
-
-export function formatDecks(results){
-  return results === null ? setDecks() : JSON.parse(results)
 }

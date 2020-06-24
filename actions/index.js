@@ -31,11 +31,10 @@ export function resetDeck(){
     }
 }
 
-export function addCard(deckId, question, answer){
+export function addCard(deckId, card){
     return{
         type: ADD_CARD,
         deckId,
-        question,
-        answer
+        card
     }
 }

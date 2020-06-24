@@ -3,7 +3,7 @@ import DeckList from './DeckList'
 import AddDeck from './AddDeck'
 import { Platform } from 'react-native'
 import { purple, white } from '../utils/colors'
-import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons'
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
@@ -12,7 +12,7 @@ const TabNavigator = createBottomTabNavigator({
       screen: DeckList,
       navigationOptions: {
         tabBarLabel: 'Decks',
-        tabBarIcon: ( {tintColor }) => <Ionicons name="ios-bookmarks" size={30} color={tintColor}/>
+        tabBarIcon: ( {tintColor }) => <MaterialCommunityIcons name="cards" size={30} color={tintColor}/>
       }
     },
     AddDeck: {

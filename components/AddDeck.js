@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { View, 
-    Text, 
+import {Text, 
     TextInput, 
     KeyboardAvoidingView,
     StyleSheet } from 'react-native';
-    import { connect } from 'react-redux'
+import { connect } from 'react-redux'
 import { addDeck } from '../actions'
-import { saveDeck, generateID } from '../utils/helpers'
+import { saveDeck} from '../utils/helpers'
 import { black } from '../utils/colors'
 import SubmitButton from './SubmitButton'
-import { NavigationActions } from 'react-navigation'
 
 class AddDeck extends Component {
     state = { 
@@ -19,34 +17,29 @@ class AddDeck extends Component {
     handleSubmit = () =>{
         const { deckName } = this.state
         const { dispatch } = this.props
-        const id = generateID()
+        
         if(!deckName){
             alert("Deck Name can't be empty")
             return
-        }        
-        const newDeck = {
-            title: deckName.trim(),
-            questions: []
         }
-        dispatch(addDeck(id, newDeck))
-        this.setState({
-            deckName: ''
-        })
-        this.toHome()
-        saveDeck(id, newDeck)
+       
+        dispatch(addDeck(deckName))
+        saveDeck(deckName)
+
+        this.toDeckDetails(deckName)
+        this.setState({deckName: ''})
+        
 
     }
 
-    toHome = () => {
-        this.props.navigation.dispatch(NavigationActions.back({
-            key: 'AddDeck'
-        }))
+    toDeckDetails = (deckId) => {
+        this.props.navigation.navigate('DeckDetails', {deckId})
     }
     render() {
         const { deckName } = this.state
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
-                <Text style={styles.label}>Deck Name</Text>
+                <Text style={styles.label}>What is your new deck name?</Text>
                 <TextInput 
                     style={styles.input} 
                     value={deckName} 
@@ -66,7 +59,7 @@ const styles = StyleSheet.create({
         padding: 20
     },
     label:{
-        fontSize: 30,
+        fontSize: 20,
         marginBottom: 10
     },
     input:{

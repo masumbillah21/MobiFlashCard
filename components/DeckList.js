@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { white, gray } from '../utils/colors'
-import { getDecks } from '../utils/helpers'
-import { retrieveDeck } from '../actions'
 import { connect } from 'react-redux'
+import { getDecks, getCardLength } from '../utils/helpers'
+import { retrieveDeck } from '../actions'
 
-class DeckList extends Component {
-    async componentDidMount(){
-        const { dispatch } = this.props
-        await getDecks()
-        .then((decks) => dispatch(retrieveDeck(decks)))
+
+class DeckList extends Component {   
+
+    componentDidMount(){
+        getDecks()
+        .then((decks) => this.props.retrieveAllDecks(decks))
     }
     
     render() {
@@ -25,16 +26,17 @@ class DeckList extends Component {
                 renderItem={({item}) => {
                     const { title, questions } = decks[item.key]
                     return (
-                        <View style={styles.container}>
-                            <Text style={styles.title}>{title}</Text>
-                            <Text style={styles.total}>Total Cards: {questions ? questions.length: 0}</Text>
-                        </View>
+                        <TouchableOpacity 
+                            onPress={() => this.props.navigation.navigate('DeckDetails', {deckId: item.key })}>
+                            <View style={styles.container} key={item.key}>
+                                <Text style={styles.title}>{title}</Text>
+                                <Text style={styles.total}>{getCardLength(questions)}</Text>
+                            </View>
+                        </TouchableOpacity>
                     )
-                    
                 }}
             />
-                
-        );
+        )
     }
 }
 
@@ -61,11 +63,12 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = (decks) => {
+const mapStateToProps = (decks) => ( {decks} )
+
+const mapDispatchToProps = ( dispatch ) => {
     return{
-        decks
+        retrieveAllDecks: (decks) => dispatch(retrieveDeck(decks))
     }
 }
 
-
-export default connect(mapStateToProps)(DeckList)
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList)

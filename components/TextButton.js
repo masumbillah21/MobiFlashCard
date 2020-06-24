@@ -6,13 +6,13 @@ export default function TextButton ({ children, onPress, style = {}}) {
 
     return (
         <TouchableOpacity onPress={onPress}>
-            <Text style={[styles.reset, style]}> { children } </Text>
+            <Text style={[styles.textButton, style]}> { children } </Text>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
-    reset: {
+    textButton: {
         textAlign: 'center',
         color: purple
     }

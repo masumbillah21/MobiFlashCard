@@ -1,28 +1,40 @@
-import { ADD_DECK, RETRIEVE_DECK, DELETE_DECK, RESET_DECK , ADD_CARD } from '../actions'
+import { ADD_DECK, 
+    RETRIEVE_DECK, 
+    DELETE_DECK, 
+    RESET_DECK , 
+    ADD_CARD } from '../actions'
 
-export default function decks (state = {}, actions){
-    switch(actions.type){
+export default function decks (state = {}, action){
+    switch(action.type){
         case ADD_DECK:
             return{
                 ...state,
-                [actions.deckId] : actions.deck
+                [action.deck]: {
+                    title: action.deck,
+                    qeuestions: []
+                }
             }
         case RETRIEVE_DECK:
             return{
                 ...state,
-                ...actions.decks
+                ...action.decks
             }
         case DELETE_DECK:
             return{
-
+                ...state
             }
-        case RESET_DECK:
+        case RESET_DECK:            
             return{
-
+                ...state,
             }
         case ADD_CARD:
+            const { deckId, card } = action
             return{
-                
+                ...state,
+                [deckId]:{
+                    ...state[deckId],
+                    questions: state[deckId].questions.concat([card])
+                }
             }
         default:
             return state

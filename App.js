@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import reducers from './reducers'
 import StackNavigation from './components/StackNavigation'
 import Constants from 'expo-constants'
-import { purple, gray } from './utils/colors'
+import { purple } from './utils/colors'
 
 function AppStatusBar ({backgroundColor, ...props}){
   return(
@@ -16,6 +16,7 @@ function AppStatusBar ({backgroundColor, ...props}){
 }
 
 class App extends Component {
+
   render(){
     const store = createStore(reducers)
     return (
@@ -29,5 +30,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App
