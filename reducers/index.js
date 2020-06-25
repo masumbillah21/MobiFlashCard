@@ -10,7 +10,7 @@ export default function decks (state = {}, action){
                 ...state,
                 [action.deck]: {
                     title: action.deck,
-                    qeuestions: []
+                    questions: []
                 }
             }
         case RETRIEVE_DECK:
@@ -24,12 +24,13 @@ export default function decks (state = {}, action){
                 ...state
             }        
         case ADD_CARD:
-            const { deckId, card } = action
-            return{
+            const { question, answer} = action.card
+            const {deckId} = action               
+            return {
                 ...state,
-                [deckId]:{
+                [deckId]: {
                     ...state[deckId],
-                    questions: state[deckId].questions.concat([card])
+                    questions: [...state[deckId].questions, {question, answer}]
                 }
             }
         default:

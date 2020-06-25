@@ -15,28 +15,38 @@ class DeckList extends Component {
     
     render() {
         const { decks } = this.props
-        return (
-            <FlatList style={{flex: 1, backgroundColor: gray}}    
-                data={Object.keys(decks).map((id) => {
-                    return{
-                        key: id
-                    }
-                })}
-
-                renderItem={({item}) => {
-                    const { title, questions } = decks[item.key]
-                    return (
-                        <TouchableOpacity 
-                            onPress={() => this.props.navigation.navigate('DeckDetails', {deckId: item.key })}>
-                            <View style={styles.container} key={item.key}>
-                                <Text style={styles.title}>{title}</Text>
-                                <Text style={styles.total}>{getCardLength(questions)}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )
-                }}
-            />
-        )
+        
+        if( Object.keys(decks).length === 0 && decks.constructor === Object){
+            return(
+                <View style={styles.container}>
+                    <Text style={styles.title}>NO DECK FOUND</Text>
+                </View>
+            )
+        }else{            
+            return (
+                <FlatList style={{flex: 1, backgroundColor: gray}}    
+                    data={Object.keys(decks).map((id) => {
+                        return{
+                            key: id
+                        }
+                    })}
+    
+                    renderItem={({item}) => {
+                        const { title, questions } = decks[item.key]
+                        return (
+                            <TouchableOpacity 
+                                onPress={() => this.props.navigation.navigate('DeckDetails', {deckId: item.key })}>
+                                <View style={styles.container} key={item.key}>
+                                    <Text style={styles.title}>{title}</Text>
+                                    <Text style={styles.total}>{getCardLength(questions)}</Text>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }}
+                />
+            )
+        }
+        
     }
 }
 

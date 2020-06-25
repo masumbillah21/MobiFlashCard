@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation'
 import { clearLocalNotification } from '../utils/helpers'
 
+
 class Quiz extends Component {
     static navigationOptions = ( {navigation} ) => {
         const deckName  = navigation.state.params.deckId
@@ -115,6 +116,7 @@ class Quiz extends Component {
                     </Text>
                 </View>
                 }
+
                 <Text style={styles.numQuestion}>{num} out of {questionLength} questions</Text>
                 <SubmitButton onPress={() => this.showAnswer()}>
                         <Text>Show Answer</Text>

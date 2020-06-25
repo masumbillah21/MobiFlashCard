@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { white, purple, black } from '../utils/colors'
 import { saveCard } from '../utils/helpers'
 import { addCard } from '../actions'
-import { NavigationActions } from 'react-navigation'
 
 
 class AddCard extends Component {
@@ -17,27 +16,26 @@ class AddCard extends Component {
     
     handleSubmit = () => {
         const { question, answer } = this.state
-        const { deckId, dispatch, navigation } = this.props
+        const { dispatch } = this.props
+        const { deckId } = this.props.navigation.state.params
+        
         if(!question || !answer){
             alert("Quesion and/or Answer can't be empty")
             return
         }
-
-        dispatch(addCard(deckId, {question, answer}))
+        saveCard( deckId, { question, answer } )   
+        dispatch(addCard(deckId, { question, answer})) 
+         
+        this.setState({ question: '', answer: '' })           
         
-        this.setState({ question: '', answer: '' })
-        saveCard( deckId, { question, answer } )
-
-        this.props.navigation.dispatch(NavigationActions.back({
-            key: null
-        }))
+        this.props.navigation.navigate('DeckDetails', {deckId})
 
     }
     
     render() {
         const { question, answer } = this.state
         const { deckId } = this.props
-
+       
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <Text style={styles.label}>Add Card</Text>

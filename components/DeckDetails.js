@@ -16,18 +16,18 @@ class DeckDetails extends Component {
             title: deckName
         }
     }
-    handleAddCard = () => {
-        const { deckId, navigation } = this.props
+    handleAddCard = (deckId) => {
+        const { navigation } = this.props
         navigation.navigate('AddCard', {deckId})
     }
 
-    handleStartQuiz = () => {
-        const { deckId, navigation } = this.props
+    handleStartQuiz = (deckId) => {
+        const { navigation } = this.props
         navigation.navigate('Quiz', {deckId})
     }
 
-    handleDeleteDeck = () => {
-        const { deckId, dispatch, navigation } = this.props
+    handleDeleteDeck = (deckId) => {
+        const { dispatch, navigation } = this.props
         dispatch(deleteDeck(deckId))
         removeDeck(deckId)
 
@@ -37,8 +37,8 @@ class DeckDetails extends Component {
 
         
     render() {
-        if(this.props.deckId){
-            const { decks, deckId } = this.props
+        const { decks, deckId } = this.props
+        if(decks[deckId]){            
             const { title, questions } = decks[deckId]
             return (
                 <View style={styles.container}>
@@ -50,13 +50,13 @@ class DeckDetails extends Component {
                     <View style={styles.buttonContainer}>
     
                         <SubmitButton 
-                        onPress={ () => this.handleAddCard() }>
+                        onPress={ () => this.handleAddCard(deckId) }>
                             <Text>Add Card</Text>
                         </SubmitButton>
     
                         <SubmitButton 
                             style={styles.quizButton} 
-                            onPress={ () => this.handleStartQuiz()}>
+                            onPress={ () => this.handleStartQuiz(deckId)}>
                             <Text style={{color: white}}>Start Quiz</Text>
                         </SubmitButton>
                     </View>
@@ -64,7 +64,7 @@ class DeckDetails extends Component {
                     <View>
                         <TextButton 
                             style={{marginTop: 30}} 
-                            onPress={() => this.handleDeleteDeck()}>
+                            onPress={() => this.handleDeleteDeck(deckId)}>
                             <Text style={styles.deleteButton}>Delete Deck</Text>
                         </TextButton>
                     </View>
