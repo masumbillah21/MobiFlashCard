@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Animated } from 'react-native';
 import { white, gray } from '../utils/colors'
 import { connect } from 'react-redux'
 import { getDecks, getCardLength } from '../utils/helpers'
@@ -12,7 +12,24 @@ class DeckList extends Component {
         getDecks()
         .then((decks) => this.props.retrieveAllDecks(decks))
     }
-    
+
+    state = { 
+        bounceValue: new Animated.Value(1)
+    }
+
+  
+    gotoDescription = (deckId)=>{
+        const { bounceValue } = this.state
+
+        Animated.sequence([
+            Animated.timing(bounceValue, { duration: 125, toValue: 0.96 }),
+            Animated.timing(bounceValue, { duration: 125, toValue: 1})
+        ]).start(() => {
+            this.props.navigation.navigate('DeckDetails', {deckId})
+        })
+
+        
+    }
     render() {
         const { decks } = this.props
         
@@ -34,11 +51,13 @@ class DeckList extends Component {
                     renderItem={({item}) => {
                         const { title, questions } = decks[item.key]
                         return (
-                            <TouchableOpacity 
-                                onPress={() => this.props.navigation.navigate('DeckDetails', {deckId: item.key })}>
+                            <TouchableOpacity                                
+                                onPress={() => this.gotoDescription(item.key)}>
                                 <View style={styles.container} key={item.key}>
-                                    <Text style={styles.title}>{title}</Text>
-                                    <Text style={styles.total}>{getCardLength(questions)}</Text>
+                                    <Text 
+                                        style={styles.title}>{title}</Text>
+                                    <Text 
+                                        style={styles.total}>{getCardLength(questions)}</Text>
                                 </View>
                             </TouchableOpacity>
                         )
