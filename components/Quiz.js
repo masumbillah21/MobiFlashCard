@@ -5,12 +5,12 @@ import SubmitButton from './SubmitButton'
 import { purple, red, white, gray, orange } from '../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { NavigationActions } from 'react-navigation'
-import { clearLocalNotification } from '../utils/helpers'
+import { setLocalNotification, clearLocalNotification } from '../utils/helpers'
 
 
 class Quiz extends Component {
     static navigationOptions = ( {navigation} ) => {
-        const deckName  = navigation.state.params.deckId
+        const deckName  = navigation.state.params.title        
         return{
             title: 'Quiz for ' + deckName
         }
@@ -30,11 +30,10 @@ class Quiz extends Component {
         }.bind(this), 3000);
     }
 
-    submitAnswer = (answer) => {
-        //Clear notification as perticipated
-        clearLocalNotification()
+    submitAnswer = (answer) => {        
         const { correct, quesNumber } = this.state
-
+        const { decks, deckId } = this.props
+        const questionLength = decks[deckId].questions.length
         if(answer){
             this.setState({
                 correct: correct + 1,
@@ -47,6 +46,11 @@ class Quiz extends Component {
                 showAns: false
             })
         }
+        if(quesNumber === questionLength){
+            //Clear notification as perticipated
+            clearLocalNotification().then(setLocalNotification)
+        }
+        
     }
 
     restart = () => {

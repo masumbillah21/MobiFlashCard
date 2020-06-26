@@ -32,6 +32,7 @@ class DeckList extends Component {
     }
     render() {
         const { decks } = this.props
+        const { bounceValue } = this.state
         
         if( Object.keys(decks).length === 0 && decks.constructor === Object){
             return(
@@ -51,15 +52,17 @@ class DeckList extends Component {
                     renderItem={({item}) => {
                         const { title, questions } = decks[item.key]
                         return (
-                            <TouchableOpacity                                
-                                onPress={() => this.gotoDescription(item.key)}>
-                                <View style={styles.container} key={item.key}>
-                                    <Text 
-                                        style={styles.title}>{title}</Text>
-                                    <Text 
-                                        style={styles.total}>{getCardLength(questions)}</Text>
-                                </View>
-                            </TouchableOpacity>
+                            <Animated.View style={{transform:[{scale: bounceValue}]}}>
+                                <TouchableOpacity                                
+                                    onPress={() => this.gotoDescription(item.key)}>
+                                    <View style={styles.container} key={item.key}>
+                                        <Text 
+                                            style={styles.title}>{title}</Text>
+                                        <Text 
+                                            style={styles.total}>{getCardLength(questions)}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </Animated.View>
                         )
                     }}
                 />

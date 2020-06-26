@@ -5,6 +5,13 @@ import {getInitailData, MOBI_FLASHCARDS_STORAGE_KEY, MOBI_FLASHCARDS_NOTIFY_KEY 
 import * as Permissions from 'expo-permissions'
 import { Notifications } from 'expo'
 
+/*
+* Generate Unic Id
+*/
+
+function generateUID () {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+}
 
 /*
 * Storing data to local storage
@@ -29,10 +36,11 @@ export const getDecks = async () => {
 }
 
 export const saveDeck = async (title) => {
+    const id = generateUID()
     try{
         const values = await AsyncStorage.mergeItem(MOBI_FLASHCARDS_STORAGE_KEY, 
             JSON.stringify({
-            [title]: {
+            [id]: {
                 title,
                 questions: []
             }
@@ -122,8 +130,8 @@ export function setLocalNotification(){
 
                 let tomorrow = new Date()
                 tomorrow.setDate(tomorrow.getDate + 1)
-                tomorrow.setHours(2)
-                tomorrow.setMinutes(57)
+                tomorrow.setHours(20)
+                tomorrow.setMinutes(0)
 
                 Notifications.scheduleLocalNotificationAsync(
                     createNotification(),

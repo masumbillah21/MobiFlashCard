@@ -17,7 +17,7 @@ class AddCard extends Component {
     handleSubmit = () => {
         const { question, answer } = this.state
         const { dispatch } = this.props
-        const { deckId } = this.props.navigation.state.params
+        const deckId = this.props.navigation.state.params.deckId
         
         if(!question || !answer){
             alert("Quesion and/or Answer can't be empty")
@@ -34,12 +34,12 @@ class AddCard extends Component {
     
     render() {
         const { question, answer } = this.state
-        const { deckId } = this.props
-       
+        const { deckId, decks } = this.props
+        const {title} = decks[deckId]
         return (
             <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <Text style={styles.label}>Add Card</Text>
-                <Text style={styles.label}>{deckId}</Text>
+                <Text style={styles.label}>{title}</Text>
                 <TextInput 
                     style={styles.input} 
                     value={question} 
@@ -79,9 +79,10 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = (state, { navigation }) => {
+const mapStateToProps = (decks, { navigation }) => {
     const deckId = navigation.state.params.deckId
     return{
+        decks,
         deckId
     }
 }

@@ -6,24 +6,18 @@ import SubmitButton from './SubmitButton'
 import TextButton from './TextButton'
 import { getCardLength, removeDeck } from '../utils/helpers'
 import { deleteDeck } from '../actions'
-import { NavigationActions } from 'react-navigation'
 
 class DeckDetails extends Component {
-
-    static navigationOptions = ( {navigation} ) => {
-        const deckName  = navigation.state.params.deckId
-        return{
-            title: deckName
-        }
-    }
+    
     handleAddCard = (deckId) => {
         const { navigation } = this.props
         navigation.navigate('AddCard', {deckId})
     }
 
     handleStartQuiz = (deckId) => {
-        const { navigation } = this.props
-        navigation.navigate('Quiz', {deckId})
+        const { navigation, decks } = this.props
+        const title = decks[deckId].title
+        navigation.navigate('Quiz', {deckId, title})
     }
 
     handleDeleteDeck = (deckId) => {
